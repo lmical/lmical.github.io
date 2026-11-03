@@ -17,5 +17,7 @@ My main research interests include:
 - Structure-preserving discretizations, including well-balanced, positivity-preserving, and asymptotic-preserving schemes.
 - Finite-volume, finite-difference, finite-element, and residual-distribution methods for nonlinear hyperbolic PDEs.
 - Computational fluid dynamics, including compressible flows, shallow water models, and multifluid flows.
+- Adaptive schemes
+- IMEX schemes for stiff problems
 
 My goal is to develop reliable and efficient numerical methods capable of accurately capturing challenging physical phenomena arising in real-world applications.
