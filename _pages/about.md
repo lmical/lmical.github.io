@@ -16,6 +16,7 @@ My main research interests include:
 - (Arbitrary-)high-order numerical methods for time integration, including Deferred Correction and ADER methods.
 - Structure-preserving discretizations, including well-balanced, positivity-preserving, and asymptotic-preserving schemes.
 - Finite-volume, finite-difference, finite-element, and residual-distribution methods for nonlinear hyperbolic PDEs.
+- Dual-formulation methods able to exploit the advantages of multiple formulations of the same governing equations.
 - Computational fluid dynamics, including compressible flows, shallow water models, and multifluid flows.
 - Adaptive schemes
 - Implicit-explicit schemes for stiff problems
