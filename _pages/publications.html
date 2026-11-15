@@ -12,64 +12,50 @@ author_profile: true
 </p>
 {% endif %}
 
-{% assign chronological_publications = site.publications | sort: "date" %}
-{% assign sorted_publications = chronological_publications | reverse %}
+{% assign sorted_publications = site.publications | sort: "date" | reverse %}
 
 {% for category in site.publication_category %}
 
-  {% assign category_has_publications = false %}
+  {% assign category_publications = sorted_publications | where: "category", category[0] %}
+  {% assign counter = category_publications.size %}
 
-  {% for post in sorted_publications %}
-    {% if post.category == category[0] %}
-      {% assign category_has_publications = true %}
-      {% break %}
-    {% endif %}
-  {% endfor %}
-
-  {% if category_has_publications %}
+  {% if counter > 0 %}
 
     <h2>{{ category[1].title }}</h2>
 
-    {% for post in sorted_publications %}
-      {% if post.category == category[0] %}
+    {% for post in category_publications %}
 
-        {% for item in chronological_publications %}
-          {% if item.path == post.path %}
-            {% assign publication_number = forloop.index %}
-            {% break %}
-          {% endif %}
-        {% endfor %}
+      <div style="margin-bottom: 1em;">
 
-        <div style="margin-bottom: 1em;">
+        <strong>{{ counter }}.</strong>
+        <a href="{{ post.url | relative_url }}">
+          <strong>{{ post.title }}</strong>
+        </a>
 
-          <strong>{{ publication_number }}.</strong>
-          <a href="{{ post.url | relative_url }}">
-            <strong>{{ post.title }}</strong>
+        <div>{{ post.citation }}</div>
+
+        {% if post.paperurl %}
+          <a href="{{ post.paperurl }}">
+            {% if post.paperurl contains 'doi.org' %}
+              DOI
+            {% elsif post.paperurl contains 'arxiv.org' %}
+              arXiv
+            {% elsif post.paperurl contains '.pdf' %}
+              PDF
+            {% else %}
+              Link
+            {% endif %}
           </a>
+        {% endif %}
 
-          <div>{{ post.citation }}</div>
+        {% if post.bibtexurl %}
+          | <a href="{{ post.bibtexurl }}">BibTeX</a>
+        {% endif %}
 
-          {% if post.paperurl %}
-            <a href="{{ post.paperurl }}">
-              {% if post.paperurl contains 'doi.org' %}
-                DOI
-              {% elsif post.paperurl contains 'arxiv.org' %}
-                arXiv
-              {% elsif post.paperurl contains '.pdf' %}
-                PDF
-              {% else %}
-                Link
-              {% endif %}
-            </a>
-          {% endif %}
+      </div>
 
-          {% if post.bibtexurl %}
-            | <a href="{{ post.bibtexurl }}">BibTeX</a>
-          {% endif %}
+      {% assign counter = counter | minus: 1 %}
 
-        </div>
-
-      {% endif %}
     {% endfor %}
 
   {% endif %}
