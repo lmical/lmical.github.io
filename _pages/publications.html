@@ -17,34 +17,61 @@ author_profile: true
 
 {% for category in site.publication_category %}
 
-  <h2>{{ category[1].title }}</h2>
+  {% assign category_has_publications = false %}
 
   {% for post in sorted_publications %}
     {% if post.category == category[0] %}
-
-      {% for item in chronological_publications %}
-        {% if item.path == post.path %}
-          {% assign publication_number = forloop.index %}
-          {% break %}
-        {% endif %}
-      {% endfor %}
-
-      <div style="margin-bottom: 1em;">
-
-        <strong>{{ publication_number }}.</strong>
-        <a href="{{ post.url | relative_url }}">
-          <strong>{{ post.title }}</strong>
-        </a>
-
-        <div>{{ post.citation }}</div>
-
-        {% if post.paperurl %}
-          <a href="{{ post.paperurl }}">DOI / arXiv</a>
-        {% endif %}
-
-      </div>
-
+      {% assign category_has_publications = true %}
+      {% break %}
     {% endif %}
   {% endfor %}
+
+  {% if category_has_publications %}
+
+    <h2>{{ category[1].title }}</h2>
+
+    {% for post in sorted_publications %}
+      {% if post.category == category[0] %}
+
+        {% for item in chronological_publications %}
+          {% if item.path == post.path %}
+            {% assign publication_number = forloop.index %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+
+        <div style="margin-bottom: 1em;">
+
+          <strong>{{ publication_number }}.</strong>
+          <a href="{{ post.url | relative_url }}">
+            <strong>{{ post.title }}</strong>
+          </a>
+
+          <div>{{ post.citation }}</div>
+
+          {% if post.paperurl %}
+            <a href="{{ post.paperurl }}">
+              {% if post.paperurl contains 'doi.org' %}
+                DOI
+              {% elsif post.paperurl contains 'arxiv.org' %}
+                arXiv
+              {% elsif post.paperurl contains '.pdf' %}
+                PDF
+              {% else %}
+                Link
+              {% endif %}
+            </a>
+          {% endif %}
+
+          {% if post.bibtexurl %}
+            | <a href="{{ post.bibtexurl }}">BibTeX</a>
+          {% endif %}
+
+        </div>
+
+      {% endif %}
+    {% endfor %}
+
+  {% endif %}
 
 {% endfor %}
