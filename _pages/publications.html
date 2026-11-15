@@ -12,22 +12,39 @@ author_profile: true
 </p>
 {% endif %}
 
+{% assign chronological_publications = site.publications | sort: "date" %}
+{% assign sorted_publications = chronological_publications | reverse %}
+
 {% for category in site.publication_category %}
+
   <h2>{{ category[1].title }}</h2>
 
-  <ol>
-  {% for post in site.publications reversed %}
+  {% for post in sorted_publications %}
     {% if post.category == category[0] %}
-      <li style="margin-bottom: 1em;">
-        <a href="{{ post.url | relative_url }}"><strong>{{ post.title }}</strong></a>
+
+      {% for item in chronological_publications %}
+        {% if item.path == post.path %}
+          {% assign publication_number = forloop.index %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+
+      <div style="margin-bottom: 1em;">
+
+        <strong>{{ publication_number }}.</strong>
+        <a href="{{ post.url | relative_url }}">
+          <strong>{{ post.title }}</strong>
+        </a>
 
         <div>{{ post.citation }}</div>
 
         {% if post.paperurl %}
           <a href="{{ post.paperurl }}">DOI / arXiv</a>
         {% endif %}
-      </li>
+
+      </div>
+
     {% endif %}
   {% endfor %}
-  </ol>
+
 {% endfor %}
